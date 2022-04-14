@@ -31,10 +31,7 @@ contract Internals is Events {
      */
     bytes32 internal constant _DUMMY_IMPLEMENTATION_SLOT =
         0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
-    
-    /**
-     * @dev Returns the storage slot which stores the sigs array set for the implementation.
-     */
+
     function _getSlotImplSigsSlot(address implementation_)
         internal
         pure
@@ -46,9 +43,6 @@ contract Internals is Events {
             );
     }
 
-    /**
-     * @dev Returns the storage slot which stores the implementation address for the function sig.
-     */
     function _getSlotSigsImplSlot(bytes4 sig_) internal pure returns (bytes32) {
         return keccak256(abi.encode("eip1967.proxy.implementation", sig_));
     }
@@ -103,7 +97,7 @@ contract Internals is Events {
     }
 
     /**
-     * @dev Removes implementation and the mappings corresponding to it.
+     * @dev removes implementation and the mappings corresponding to it.
      */
     function _removeImplementationSigs(address implementation_) internal {
         bytes32 slot_ = _getSlotImplSigsSlot(implementation_);
@@ -117,9 +111,6 @@ contract Internals is Events {
         emit removeImplementationLog(implementation_);
     }
 
-    /**
-     * @dev Returns bytes4[] sigs from implementation address. If implemenatation is not registered then returns empty array.
-     */
     function _getImplementationSigs(address implementation_)
         internal
         view
@@ -129,9 +120,6 @@ contract Internals is Events {
         return getSigsSlot(slot_).value;
     }
 
-    /**
-     * @dev Returns implementation address from bytes4 sig. If sig is not registered then returns address(0).
-     */
     function _getSigImplementation(bytes4 sig_)
         internal
         view
@@ -235,24 +223,20 @@ contract Internals is Events {
 }
 
 contract AdminStuff is Internals {
-
-    /**
-     * @dev Only admin gaurd.
-     */
     modifier onlyAdmin() {
         require(msg.sender == _getAdmin(), "not-the-admin");
         _;
     }
 
     /**
-     * @dev Sets new admin.
+     * @dev sets new admin.
      */
     function setAdmin(address newAdmin_) external onlyAdmin {
         _setAdmin(newAdmin_);
     }
 
     /**
-     * @dev Sets new dummy-implementation.
+     * @dev sets new dummy-implementation.
      */
     function setDummyImplementation(address newDummyImplementation_)
         external
@@ -262,7 +246,7 @@ contract AdminStuff is Internals {
     }
 
     /**
-     * @dev Adds new implementation address.
+     * @dev adds new implementation address.
      */
     function addImplementation(address implementation_, bytes4[] calldata sigs_)
         external
@@ -272,7 +256,7 @@ contract AdminStuff is Internals {
     }
 
     /**
-     * @dev Removes an existing implementation address.
+     * @dev removes an existing implementation address.
      */
     function removeImplementation(address implementation_) external onlyAdmin {
         _removeImplementationSigs(implementation_);
@@ -290,21 +274,21 @@ abstract contract Proxy is AdminStuff {
     {}
 
     /**
-     * @dev Returns admin's address.
+     * @dev returns admin's address.
      */
     function getAdmin() external view returns (address) {
         return _getAdmin();
     }
 
     /**
-     * @dev Returns dummy-implementations's address.
+     * @dev returns dummy-implementations's address.
      */
     function getDummyImplementation() external view returns (address) {
         return _getDummyImplementation();
     }
 
     /**
-     * @dev Returns bytes4[] sigs from implementation address If not registered then returns empty array.
+     * @dev returns bytes4[] sigs from implementation address If not registered then returns empty array.
      */
     function getImplementationSigs(address impl_)
         external
@@ -315,7 +299,7 @@ abstract contract Proxy is AdminStuff {
     }
 
     /**
-     * @dev Returns implementation address from bytes4 sig. If sig is not registered then returns address(0).
+     * @dev returns implementation address from bytes4 sig. If sig is not registered then returns address(0).
      */
     function getSigsImplementation(bytes4 sig_)
         external
