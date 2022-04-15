@@ -5,7 +5,7 @@ Upgradeable proxy with infinite implementations enabled at once.
 Read about general upgradeable contacts with 1 implementation contract [here](https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeable).
 
 ## Introduction
-Proxies are a big part of ethereum development, they solve many problems faced by developers while writing smart contracts. Still there are some problems which aren't solved via normal proxies. Eg:- Ethereum code-limit issue, deployment of full contract again for updates in small part of the code, unability to easily disable/enable some functions.
+Upgradeable proxies are a big part of ethereum development, they allow smart contracts to be upgradable add/remove code and almost all protocol now uses it one way or another. Still there are some problems which aren't solved via these proxies. Eg:- Ethereum code-limit issue, deployment of full contract again for updates in small part of the code, unability to easily disable/enable some functions.
 So whats the solution? Normal proxies have the implementation address stored (in the implementaion slot) to which they delegate call for every external call. What if there could be multiple implementations for a single proxy, the proxy able to decide which implementation to delegate call to for a particular external call. This solves the ethereum-code limit issue as the code can be separated out into different implementations, for smaller updates to the code only that particular implementation has to be redeployed, lastly functions can be easily disabled/enabled by removing/adding implementations.
 
 ## How it works?
@@ -22,6 +22,9 @@ So whats the solution? Normal proxies have the implementation address stored (in
 ## Dummy Implementation
 One issue with infinite proxies is that etherscan isn't able to detect that the contract is a proxy and hence isn't able to link it to the implementations. This makes it not usable via etherscan, also users can't see the list of all the read/write functions they can call.
 An innovative solution for the problem is using a dummy implemenatation. A dummy implementation is nothing but a contract containing all external functions which are callable by the users. The dummy implementation doesn't contain any logics of the functions (analogous to contract interfaces). The dummy implementation's address is stored at the implementation slot which etherscan detects in order to link proxies to their implementations, hence all the external functions can then be seen/called directly via etherscan. Through dummy impelementations, etherscan gets the functions sigs, generates the calldata, but the actual call is delegated to the respective implementation.
+
+## Calling an infinite proxy
+All the calls (read & write) are exactly same as any other smart contract (upgradable or non-upgradable) which allows infinite proxy to be composable with any contracts or integrations.
 
 ## Live contracts using Infinite Proxy.
 - iUSDC vault of [Instadapp Lite](https://lite.instadapp.io/). [here](https://etherscan.io/address/0xc8871267e07408b89aA5aEcc58AdCA5E574557F8)
