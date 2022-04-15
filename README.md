@@ -15,10 +15,10 @@ So whats the solution? Normal proxies have the implementation address stored (in
 - In fallback it fetches the msg.sig, fetches the implementation from it and runs the code logic on that.
 
 ## How to use it?
-- Proxies and implementations are deployed separately, then multiple(infinite) implementations can be added to the proxy. One thing to make sure is the storage variables of all implementations should be at the same storage slot so things don't get messed up.
+- Proxies and implementations are deployed separately, then multiple(infinite) implementations can be added to the proxy. One thing to make sure is the storage variables of all implementations should be at the same storage slot so storage don't get messed up (similar to what we do in upgradable proxy).
 - This repo contains an example of using infinite proxies. Checkout the example contracts. Different implementations have been separated out into different modules, but they use the same variables contract.
 - Deployment of infinite-proxies is also a little different from normal proxies, the repo also contains an example deployment script.
 
 ## Dummy Implementation
-One issue with infinite proxies is that etherscan isn't able to detect that the contract is a proxy and hence isn't able to link it to the implementations. This makes it non-directly usable via etherscan, also users can't see the list of all the read/write functions they can call.
+One issue with infinite proxies is that etherscan isn't able to detect that the contract is a proxy and hence isn't able to link it to the implementations. This makes it not usable via etherscan, also users can't see the list of all the read/write functions they can call.
 An innovative solution for the problem is using a dummy implemenatation. A dummy implementation is nothing but a contract containing all external functions which are callable by the users. The dummy implementation doesn't contain any logics of the functions (analogous to contract interfaces). The dummy implementation's address is stored at the implementation slot which etherscan detects in order to link proxies to their implementations, hence all the external functions can then be seen/called directly via etherscan. Through dummy impelementations, etherscan gets the functions sigs, generates the calldata, but the actual call is delegated to the respective implementation.
