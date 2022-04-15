@@ -27,6 +27,6 @@ contract UserModule is Events {
         _userBalance[msg.sender] -= amount_;
         IERC20(token).safeTransfer(msg.sender, amount_);
 
-        event withdrawLog(uint256 amount_);
+        emit withdrawLog(amount_);
     }
 }
