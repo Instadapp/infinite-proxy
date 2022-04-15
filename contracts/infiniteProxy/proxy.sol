@@ -31,7 +31,7 @@ contract Internals is Events {
      */
     bytes32 internal constant _DUMMY_IMPLEMENTATION_SLOT =
         0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
-    
+
     /**
      * @dev Returns the storage slot which stores the sigs array set for the implementation.
      */
@@ -235,7 +235,6 @@ contract Internals is Events {
 }
 
 contract AdminStuff is Internals {
-
     /**
      * @dev Only admin gaurd.
      */
