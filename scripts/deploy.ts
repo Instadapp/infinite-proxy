@@ -5,6 +5,7 @@
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 const hre = require("hardhat");
 
 const UserModuleSigs = [
@@ -28,9 +29,11 @@ async function main() {
   let proxy: Contract,
     userModule: Contract,
     readModule: Contract,
-    dummyImplementation: Contract
+    dummyImplementation: Contract,
+    signer: SignerWithAddress
 
-  const proxyAdmin = '0x85B40eb65e49eB61De78a3a989752249f8837fc5'
+  [signer] = await ethers.getSigners();
+  const proxyAdmin = signer.address
 
   const UserModule = await ethers.getContractFactory(
     "contracts/example/module1/main.sol:UserModule"
