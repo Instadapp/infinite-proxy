@@ -26,6 +26,7 @@ Proxy                      |  Infinite Proxy
 - Deployment of infinite-proxies is also a little different from normal proxies, the repo also contains an example deployment script.
 
 ## Dummy Implementation
+![image](https://user-images.githubusercontent.com/34437877/163826774-44645c4c-801d-4232-b42c-cd0b079987fa.png)
 One issue with infinite proxies is that etherscan isn't able to detect that the contract is a proxy and hence isn't able to link it to the implementations. This makes it not usable via etherscan, also users can't see the list of all the read/write functions they can call.
 An innovative solution for the problem is using a dummy implemenatation. A dummy implementation is nothing but a contract containing all external functions which are callable by the users. The dummy implementation doesn't contain any logics of the functions (analogous to contract interfaces). The dummy implementation's address is stored at the implementation slot which etherscan detects in order to link proxies to their implementations, hence all the external functions can then be seen/called directly via etherscan. Through dummy impelementations, etherscan gets the functions sigs, generates the calldata, but the actual call is delegated to the respective implementation.
 
