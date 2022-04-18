@@ -8,6 +8,12 @@ Read about general upgradeable contacts with 1 implementation contract [here](ht
 Upgradeable proxies are a big part of ethereum development, they allow smart contracts to be upgradable add/remove code and almost all protocol now uses it one way or another. Still there are some problems which aren't solved via these proxies. Eg:- Ethereum code-limit issue, deployment of full contract again for updates in small part of the code, unability to easily disable/enable some functions.
 So whats the solution? Normal proxies have the implementation address stored (in the implementaion slot) to which they delegate call for every external call. What if there could be multiple implementations for a single proxy, the proxy able to decide which implementation to delegate call to for a particular external call. This solves the ethereum-code limit issue as the code can be separated out into different implementations, for smaller updates to the code only that particular implementation has to be redeployed, lastly functions can be easily disabled/enabled by removing/adding implementations.
 
+## Comparision
+Proxy                      |  Infinite Proxy
+:-------------------------:|:-------------------------:
+![image](https://user-images.githubusercontent.com/34437877/163826330-3c67a894-1f6b-4833-8d3d-7ad947407b3d.png) | ![image](https://user-images.githubusercontent.com/34437877/163826362-4bf95d26-3914-4cc5-900b-4ab610ff1959.png)
+
+
 ## How it works?
 - Creates a mapping from bytes4 sig to implementation's address
 - Stores mapping from implementation's address to bytes4[] sigs. All the external functions we want to be callable from our contract.
