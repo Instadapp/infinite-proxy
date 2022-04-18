@@ -35,4 +35,4 @@ All the calls (read & write) are exactly same as any other smart contract (upgra
 
 ## Live contracts using Infinite Proxy.
 - iUSDC vault of [Instadapp Lite](https://lite.instadapp.io/). [here](https://etherscan.io/address/0xc8871267e07408b89aA5aEcc58AdCA5E574557F8)
-- DSA v2 contracts [here](https://github.com/Instadapp/dsa-contracts/tree/master/contracts/v2). It been live for more than a year now uses an older version of infinite proxy.
+- DSA v2 contracts [here](https://github.com/Instadapp/dsa-contracts/tree/master/contracts/v2). It been live for more than a year, uses an older version of infinite proxy.
