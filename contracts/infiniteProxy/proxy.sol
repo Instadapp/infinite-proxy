@@ -35,7 +35,7 @@ contract Internals is Events {
     /**
      * @dev Returns the storage slot which stores the sigs array set for the implementation.
      */
-    function _getSlotImplSigsSlot(address implementation_)
+    function _getImplSigsSlot(address implementation_)
         internal
         pure
         returns (bytes32)
@@ -49,7 +49,7 @@ contract Internals is Events {
     /**
      * @dev Returns the storage slot which stores the implementation address for the function sig.
      */
-    function _getSlotSigsImplSlot(bytes4 sig_) internal pure returns (bytes32) {
+    function _getSigsImplSlot(bytes4 sig_) internal pure returns (bytes32) {
         return keccak256(abi.encode("eip1967.proxy.implementation", sig_));
     }
 
@@ -87,11 +87,11 @@ contract Internals is Events {
         bytes4[] memory sigs_
     ) internal {
         require(sigs_.length != 0, "no-sigs");
-        bytes32 slot_ = _getSlotImplSigsSlot(implementation_);
+        bytes32 slot_ = _getImplSigsSlot(implementation_);
         bytes4[] memory sigsCheck_ = getSigsSlot(slot_).value;
         require(sigsCheck_.length == 0, "implementation-already-exist");
         for (uint256 i = 0; i < sigs_.length; i++) {
-            bytes32 sigSlot_ = _getSlotSigsImplSlot(sigs_[i]);
+            bytes32 sigSlot_ = _getSigsImplSlot(sigs_[i]);
             require(
                 getAddressSlot(sigSlot_).value == address(0),
                 "sig-already-exist"
@@ -106,11 +106,11 @@ contract Internals is Events {
      * @dev Removes implementation and the mappings corresponding to it.
      */
     function _removeImplementationSigs(address implementation_) internal {
-        bytes32 slot_ = _getSlotImplSigsSlot(implementation_);
+        bytes32 slot_ = _getImplSigsSlot(implementation_);
         bytes4[] memory sigs_ = getSigsSlot(slot_).value;
         require(sigs_.length != 0, "implementation-not-exist");
         for (uint256 i = 0; i < sigs_.length; i++) {
-            bytes32 sigSlot_ = _getSlotSigsImplSlot(sigs_[i]);
+            bytes32 sigSlot_ = _getSigsImplSlot(sigs_[i]);
             delete getAddressSlot(sigSlot_).value;
         }
         delete getSigsSlot(slot_).value;
@@ -125,7 +125,7 @@ contract Internals is Events {
         view
         returns (bytes4[] memory)
     {
-        bytes32 slot_ = _getSlotImplSigsSlot(implementation_);
+        bytes32 slot_ = _getImplSigsSlot(implementation_);
         return getSigsSlot(slot_).value;
     }
 
@@ -137,7 +137,7 @@ contract Internals is Events {
         view
         returns (address implementation_)
     {
-        bytes32 slot_ = _getSlotSigsImplSlot(sig_);
+        bytes32 slot_ = _getSigsImplSlot(sig_);
         return getAddressSlot(slot_).value;
     }
 
